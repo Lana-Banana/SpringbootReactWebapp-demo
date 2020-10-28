@@ -43,7 +43,7 @@ node {
 // apply plugin: 'com.github.node-gradle.node'
 def webappDir = "$projectDir/frontend"
 
-task installReactScro[t(type: NpmTask) {
+task InstallReactScro[t(type: NpmTask) {
 	args = ["install", "react-scripts", "-g"]
 }
 
