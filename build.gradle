@@ -58,6 +58,6 @@ task CopyFrontendOutput (type: Copy) {
 }
 
 
-NpmBuild.dependsOn(installReactScro)
+NpmBuild.dependsOn(InstallReactScript)
 CopyFrontendOutput.dependsOn(NpmBuild)
 compileJava.dependsOn(CopyFrontendOutput)
