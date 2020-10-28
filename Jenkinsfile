@@ -3,13 +3,13 @@ pipeline {
     node {
       label 'jenkins-jenkins-slave'
     }
+
   }
   stages {
     stage('Build') {
       steps {
-        sh '''
-          pwd
-          ls -al
+        sh '''pwd
+ls -al
         '''
         sh './gradlew assemble'
       }
