@@ -8,10 +8,11 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        tool(name: 'gradle', type: 'gradle6.7')
         sh '''pwd
 ls -al
         '''
-        sh './gradlew assemble'
+        sh 'gradle clean build'
       }
     }
 
