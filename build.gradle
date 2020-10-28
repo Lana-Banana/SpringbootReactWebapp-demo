@@ -43,12 +43,13 @@ node {
 // apply plugin: 'com.github.node-gradle.node'
 def webappDir = "$projectDir/frontend"
 
-npm_install {
+task ReactNpmInstall(type: NpmTask) {
+	workingDir = file("${webappDir}")
+	args = ["install"]
 }
 
 task NpmBuild(type: NpmTask) {
 	workingDir = file("${webappDir}")
-	// inputs.dir("${webappDir}")
 	args = ["run", "build"]
 }
 
@@ -57,5 +58,7 @@ task CopyFrontendOutput(type: Copy) {
 	into "build/resources/main/static"
 }
 
+
+NpmBuild.dependsOn(ReactNpmInstall)
 CopyFrontendOutput.dependsOn(NpmBuild)
 compileJava.dependsOn(CopyFrontendOutput)
