@@ -12,7 +12,7 @@ pipeline {
 ls -al
 chmod +x gradlew
         '''
-        sh './gradlew build --debug'
+        sh './gradlew build --stacktrace'
       }
     }
 
