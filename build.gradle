@@ -43,16 +43,16 @@ node {
 // apply plugin: 'com.github.node-gradle.node'
 def webappDir = "$projectDir/frontend"
 
-task InstallReactScro[t(type: NpmTask) {
+task InstallReactScript (type: NpmTask) {
 	args = ["install", "react-scripts", "-g"]
 }
 
-task NpmBuild(type: NpmTask) {
+task NpmBuild (type: NpmTask) {
 	workingDir = file("${webappDir}")
 	args = ["run", "build"]
 }
 
-task CopyFrontendOutput(type: Copy) {
+task CopyFrontendOutput (type: Copy) {
 	from 'frontend/build'
 	into "build/resources/main/static"
 }
