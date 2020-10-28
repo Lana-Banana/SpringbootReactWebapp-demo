@@ -32,6 +32,10 @@ test {
 	useJUnitPlatform()
 }
 
+node {
+	download = true
+}
+
 apply plugin: "com.moowork.node"
 def webappDir = "$projectDir/frontend"
 
