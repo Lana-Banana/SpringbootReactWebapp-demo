@@ -1,7 +1,18 @@
 pipeline {
   agent {
-    node {
-      label 'jenkins-jenkins-slave'
+    kubernetes {
+      yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: shell
+    image: node:6-alpine
+    command:
+    - cat
+    tty: true
+'''
+      defaultContainer 'shell'
     }
 
   }
