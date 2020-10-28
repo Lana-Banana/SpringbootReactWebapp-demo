@@ -12,9 +12,9 @@ pipeline {
       }
       steps {
         sh '''pwd
-        ls -al
+ls -al
         '''
-        sh 'gradle clean build'
+        sh 'gradle clean build --stacktrace'
       }
     }
 
