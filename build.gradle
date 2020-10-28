@@ -44,7 +44,7 @@ node {
 def webappDir = "$projectDir/frontend"
 
 task installReactScro[t(type: NpmTask) {
-  args = ['install', 'react-scripts', '-g']
+	args = ['install', 'react-scripts', '-g']
 }
 
 task NpmBuild(type: NpmTask) {
