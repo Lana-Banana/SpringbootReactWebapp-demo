@@ -43,7 +43,7 @@ node {
 // apply plugin: 'com.github.node-gradle.node'
 def webappDir = "$projectDir/frontend"
 
-task NpmBuild(type: NpxTask) {
+task NpxBuild(type: NpxTask) {
 	// workingDir = file("${webappDir}")
 	inputs.dir("${webappDir}")
 	args = ["run", "build"]
