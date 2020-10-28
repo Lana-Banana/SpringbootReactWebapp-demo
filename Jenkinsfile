@@ -7,10 +7,12 @@ pipeline {
   }
   stages {
     stage('Build') {
+      tools {
+        gradle 'gradle6.7'
+      }
       steps {
-        tool(name: 'gradle', type: 'gradle6.7')
         sh '''pwd
-ls -al
+        ls -al
         '''
         sh 'gradle clean build'
       }
