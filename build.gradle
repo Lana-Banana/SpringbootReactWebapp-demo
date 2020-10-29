@@ -37,6 +37,7 @@ test {
 node {
 	download = true
     	version = "12.18.3"
+	npmVersion = "6.13.4"
 }
 
 // apply plugin: "com.moowork.node"
