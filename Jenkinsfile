@@ -18,12 +18,24 @@ spec:
         }
   }
   stages {
-    stage('Build') {
+    stage('Npm Build') {
       steps {
-        sh '''pwd
+        sh '''
+        pwd
+        ls -al
+        cd frontend
+        npm install
+        npm run build
+        '''
+      }
+    }
+    stage('Gradle Build') {
+      steps {
+        sh '''
+cd ..
+pwd
 ls -al
 chmod +x gradlew
-chown -R 1000:0 "/.npm"
         '''
         sh './gradlew build --stacktrace'
       }
