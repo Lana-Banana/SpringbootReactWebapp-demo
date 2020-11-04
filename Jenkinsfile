@@ -23,7 +23,7 @@ spec:
         sh '''pwd
 ls -al
 chmod +x gradlew
-sudo chown -R 1000:0 "/.npm"
+chown -R 1000:0 "/.npm"
         '''
         sh './gradlew build --stacktrace'
       }
