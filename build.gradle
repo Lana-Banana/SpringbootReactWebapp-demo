@@ -55,11 +55,12 @@ compileTestJava.options.encoding = "UTF-8"
 //    args = ["build"]
 //}
 //
-//task CopyFrontendOutput(type: Copy) {
-//    from 'src/main/frontend/build'
-//    into 'build/resources/main/static'
-//}
-//
+
+task CopyFrontendOutput(type: Copy) {
+    from 'src/main/frontend/build'
+    into 'build/resources/main/static'
+}
+
 //NpmBuild.dependsOn(FrontNpmInstall)
 //CopyFrontendOutput.dependsOn(NpmBuild)
 
