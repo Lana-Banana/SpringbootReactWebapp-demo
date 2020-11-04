@@ -17,7 +17,7 @@ spec:
     - name: "KUBECONFIG"
       value: "./kubeconfig"
 '''
-            defaultContainer 'jnlp'
+            defaultContainer 'jdk'
         }
   }
   stages {
