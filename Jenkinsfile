@@ -34,7 +34,6 @@ spec:
         stage('Gradle Build') {
             steps {
                 sh '''
-                cd ..
                 pwd
                 ls -al
                 chmod +x gradlew
