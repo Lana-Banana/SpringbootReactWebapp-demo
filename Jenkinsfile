@@ -13,9 +13,6 @@ spec:
     command:
     - cat
     tty: true
-    env:
-    - name: "KUBECONFIG"
-      value: "./kubeconfig"
 '''
             defaultContainer 'jdk'
         }
