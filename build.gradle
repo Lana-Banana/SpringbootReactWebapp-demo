@@ -57,7 +57,7 @@ compileTestJava.options.encoding = "UTF-8"
 //
 
 task CopyFrontendOutput(type: Copy) {
-    from 'src/main/frontend/build'
+    from 'frontend/build'
     into 'build/resources/main/static'
 }
 
