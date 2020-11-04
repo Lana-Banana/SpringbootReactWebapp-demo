@@ -47,7 +47,8 @@ spec:
                 sh '''
                 pwd
                 ls -al
-                ls -al frontend/build
+                ls -al frontend
+                ls -al frontend/build/
                 chmod +x gradlew
                 '''
                 sh './gradlew build --stacktrace'
