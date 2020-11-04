@@ -22,8 +22,6 @@ spec:
             steps {
                 container(name: 'nodejs') {
                     sh '''
-                    pwd
-                    ls -al
                     cd frontend
                     npm install
                     npm run build
@@ -36,6 +34,7 @@ spec:
                 sh '''
                 pwd
                 ls -al
+                ls -al frontend/build
                 chmod +x gradlew
                 '''
                 sh './gradlew build --stacktrace'
