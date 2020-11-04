@@ -43,7 +43,7 @@ compileTestJava.options.encoding = "UTF-8"
 apply plugin: 'com.moowork.node'
 
 
-def frontendDir = "$projectDir/src/main/frontend/"
+def frontendDir = "$projectDir/frontend/"
 task FrontNpmInstall (type: NpmTask) {
     workingDir = file("${frontendDir}")
     args = ["install"]
@@ -55,7 +55,7 @@ task npmBuild (type: NpmTask) {
 }
 
 task copyFrontendOutput(type: Copy) {
-    from 'src/main/frontend/build'
+    from 'frontend/build'
     into 'build/resources/main/static'
 }
 
