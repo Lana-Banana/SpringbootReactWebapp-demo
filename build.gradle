@@ -44,7 +44,7 @@ compileTestJava.options.encoding = "UTF-8"
 
 
 
-//def frontendDir = "$projectDir/src/main/frontend/"
+//def frontendDir = "$projectDir/frontend/"
 //task FrontNpmInstall (type: NpmTask) {
 //    workingDir = file("${frontendDir}")
 //    args = ["install"]
