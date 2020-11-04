@@ -54,7 +54,7 @@ spec:
                 chmod +x gradlew
                 '''
                 dir("frontend/build") {
-                    unstash "frontendoutput"
+                    unstash "frontoutput"
                 }
                 sh '''
                 pwd
