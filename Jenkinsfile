@@ -1,24 +1,23 @@
 pipeline {
   agent {
+    label 'jenkins-slave'
+  }
+  stages {
+    stage('Npm Build') {
+      agent {
         kubernetes {
             yaml '''
 apiVersion: v1
 kind: Pod
 spec:
-  securityContext:
-    runAsUser: 1000
   containers:
-  - name: jdk
-    image: timbru31/java-node:11-jdk
+  - name: shell
+    image: node:6-alpine
     command:
     - cat
     tty: true
 '''
-            defaultContainer 'jdk'
-        }
-  }
-  stages {
-    stage('Npm Build') {
+      }
       steps {
         sh '''
         pwd
@@ -32,10 +31,10 @@ spec:
     stage('Gradle Build') {
       steps {
         sh '''
-cd ..
-pwd
-ls -al
-chmod +x gradlew
+        cd ..
+        pwd
+        ls -al
+        chmod +x gradlew
         '''
         sh './gradlew build --stacktrace'
       }
