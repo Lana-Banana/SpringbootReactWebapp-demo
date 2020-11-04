@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'jenkins-slave'
+    label label 'jenkins-jenkins-slave'
   }
   stages {
     stage('Npm Build') {
