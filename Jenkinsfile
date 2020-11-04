@@ -1,6 +1,19 @@
 pipeline {
     agent {
-        label 'jenkins-jenkins-slave'
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: openjdk11
+    image: adoptopenjdk/openjdk11
+    command:
+    - cat
+    tty: true
+'''
+            defaultContainer 'openjdk11'
+        }
     }
     stages {
         stage('Npm Build') {
