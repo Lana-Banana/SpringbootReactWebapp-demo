@@ -64,4 +64,4 @@ task CopyFrontendOutput(type: Copy) {
 //NpmBuild.dependsOn(FrontNpmInstall)
 //CopyFrontendOutput.dependsOn(NpmBuild)
 
-compileJava.dependsOn(copyFrontendOutput)
+compileJava.dependsOn(CopyFrontendOutput)
