@@ -1,9 +1,24 @@
 pipeline {
   agent {
-    node {
-      label 'jenkins-jenkins-slave'
-    }
-
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  securityContext:
+    runAsUser: 1000
+  containers:
+  - name: jdk
+    image: timbru31/java-node:11-jdk
+    command:
+    - cat
+    tty: true
+    env:
+    - name: "KUBECONFIG"
+      value: "./kubeconfig"
+'''
+            defaultContainer 'jnlp'
+        }
   }
   stages {
     stage('Build') {
