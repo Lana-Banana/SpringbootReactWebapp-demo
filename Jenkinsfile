@@ -17,6 +17,7 @@ spec:
     - cat
     tty: true
 '''
+        }
       }
       steps {
         sh '''
