@@ -1,3 +1,4 @@
+// Uses Declarative syntax to run commands inside a container.
 pipeline {
     agent {
         kubernetes {
@@ -6,68 +7,43 @@ apiVersion: v1
 kind: Pod
 spec:
   securityContext:
-    runAsUser: 0
+    runAsUser: 1000
   containers:
-  - name: openjdk11
-    image: adoptopenjdk/openjdk11
+  - name: kubectl
+    image: bitnami/kubectl
     command:
     - cat
     tty: true
-  - name: nodejs
-    image: node:10.23-alpine
-    command:
-    - cat
-    tty: true
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug
-    command:
-    - /busybox/cat
-    tty: true
-    volumeMounts:
-    - name: docker-config
-      mountPath: /kaniko/.docker/
-  volumes:
-  - name: docker-config
-    configMap:
-      name: docker-config
+    env:
+    - name: "KUBECONFIG"
+      value: "./kubeconfig"
 '''
             defaultContainer 'jnlp'
         }
     }
     stages {
-        stage('Npm Build') {
+        stage('Fetch Credential & Set kubeconfig') {
             steps {
-                container(name: 'nodejs') {
+                withVault([
+                    configuration: [vaultUrl: 'https://dodt-vault.acldevsre.de',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
+                    vaultSecrets: [[path: 'jenkins/dodt-dev-poc-oabe', secretValues: [[envVar: 'KUBECONFIG', vaultKey: 'kubeconfig']]]]
+                ]){
                     sh '''
-                    cd frontend
-                    npm install
-                    npm run build
+                    cat <<EOF > kubeconfig
+                    ${KUBECONFIG}
                     '''
+                    sh "sed -i -e '1,1s/^ *//' ./kubeconfig"
                 }
             }
         }
-        stage('Gradle Build & Test') {
+        stage('Command test') {
             steps {
-                container(name: 'openjdk11') {
+                container('kubectl') {
                     sh '''
-                    chmod +x gradlew
-                    ./gradlew build --stacktrace
-                    ./gradlew test
-                    pwd
-                    ls -al build/
+                    kubectl get nodes
+                    kubectl get ns
+                    kubectl get all --all-namespaces
                     '''
-                }
-            }
-        }
-        stage('Docker Image build & Push') {
-            steps {
-                container(name: 'kaniko') {
-                    sh '''
-                    pwd
-                    ls -al
-                    echo ${env.WORKSPACE}
-                    '''
-                    sh '/kaniko/executor --context `PWD` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
         }
