@@ -78,7 +78,7 @@ spec:
                     unstash 'buildoutput'
                     sh '''
                     pwd
-                    ls- al
+                    ls -al
                     '''
                     sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
