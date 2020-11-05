@@ -53,6 +53,8 @@ spec:
                     chmod +x gradlew
                     ./gradlew build --stacktrace
                     ./gradlew test
+                    pwd
+                    ls -al build/
                     '''
                 }
             }
@@ -60,6 +62,7 @@ spec:
         stage('Docker Image build') {
             steps {
                 container(name: 'kaniko') {
+                    sh 'ls -al'
                     sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
