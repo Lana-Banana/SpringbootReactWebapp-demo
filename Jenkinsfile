@@ -13,51 +13,60 @@ spec:
     command:
     - cat
     tty: true
-'''
-            defaultContainer 'openjdk11'
-        }
-    }
-    stages {
-        stage('Npm Build') {
-            agent {
-                kubernetes {
-                    yaml '''
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
   - name: nodejs
     image: node:10.23-alpine
     command:
     - cat
     tty: true
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    volumeMounts:
+    - name: docker-config
+      mountPath: /kaniko/.docker/
+    command:
+    - cat
+    tty: true
+  volumes:
+  - name: docker-config
+    configMap:
+      name: docker-config
 '''
-                }
-            }
+            defaultContainer 'jnlp'
+        }
+    }
+    stages {
+        stage('Npm Build') {
             steps {
                 container(name: 'nodejs') {
                     sh '''
                     cd frontend
                     npm install
                     npm run build
+                    ls -al
+                    ls -al frontend/build
                     '''
-                    dir("frontend/build") {
-                       stash "frontoutput"
-                    }
+                    //dir("frontend/build") {
+                    //   stash "frontoutput"
+                    //}
                 }
             }
         }
         stage('Gradle Build') {
             steps {
-                sh '''
-                mkdir frontend/build
-                chmod +x gradlew
-                '''
-                dir("frontend/build") {
-                   unstash "frontoutput"
-                   sh "ls -al"
+                container(name: 'openjdk11') {
+                    sh '''
+                    // mkdir frontend/build
+                    pwd
+                    ls -al
+                    ls -al frontend/build
+                    chmod +x gradlew
+                    '''
+                    //dir("frontend/build") {
+                    //   unstash "frontoutput"
+                    //   sh "ls -al"
+                    //}
+                    sh './gradlew build --stacktrace'
                 }
-                sh './gradlew build --stacktrace'
             }
         }
 
