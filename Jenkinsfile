@@ -44,7 +44,7 @@ spec:
                     pwd
                     ls -al build/
                     '''
-                    stash name:'buildoutput' includes: 'build/*'
+                    stash name:'buildoutput', includes: 'build/*'
                 }
             }
         }
