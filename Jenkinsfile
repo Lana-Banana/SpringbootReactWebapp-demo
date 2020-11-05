@@ -40,6 +40,9 @@ spec:
             steps {
                 container('kubectl') {
                     sh '''
+                    pwd
+                    ls -al
+                    
                     kubectl get nodes
                     kubectl get ns
                     kubectl get all --all-namespaces
