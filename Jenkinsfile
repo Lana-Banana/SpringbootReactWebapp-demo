@@ -63,8 +63,11 @@ spec:
         stage('Docker Image build') {
             steps {
                 container(name: 'kaniko') {
-                    sh 'ls -al'
-                    sh '/kaniko/executor -f ./Dockerfile --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
+                    sh '''
+                    pwd
+                    ls -al
+                    '''
+                    sh '/kaniko/executor --context ${WORKSPACE} --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
         }
