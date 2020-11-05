@@ -59,7 +59,7 @@ spec:
                 }
             }
         }
-        stage('Docker Image build') {
+        stage('Docker Image build & Push') {
             steps {
                 container(name: 'kaniko') {
                     sh '''
