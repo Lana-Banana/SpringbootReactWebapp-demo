@@ -55,7 +55,6 @@ spec:
             steps {
                 container(name: 'openjdk11') {
                     sh '''
-                    // mkdir frontend/build
                     pwd
                     ls -al
                     ls -al frontend/build
