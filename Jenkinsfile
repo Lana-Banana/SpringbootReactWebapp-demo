@@ -46,9 +46,10 @@ spec:
                     
                     kubectl apply -f k8s/namespace.yaml
                     kubectl get ns
-                    kubectl get all --all-namespaces
                     
                     kubectl apply -f k8s/deployment.yaml
+                    kubectl get all -n springbootwebapp  
+                    
                     kubectl apply -f k8s/svc.yaml
                     kubectl get all -n springbootwebapp  
                     
