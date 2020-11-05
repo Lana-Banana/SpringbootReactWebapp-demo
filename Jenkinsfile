@@ -54,7 +54,6 @@ spec:
                     ./gradlew build --stacktrace
                     ./gradlew test
                     '''
-
                 }
             }
         }
