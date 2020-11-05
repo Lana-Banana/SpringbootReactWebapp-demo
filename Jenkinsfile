@@ -78,7 +78,9 @@ spec:
         
         stage('Docker Image build') {
             steps {
-                sh 'docker build'
+                container(name: 'kaniko') {
+                    sh 'docker build'
+                }
             }
         }
     }
