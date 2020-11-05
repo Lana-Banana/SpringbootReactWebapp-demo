@@ -23,9 +23,6 @@ spec:
     volumeMounts:
     - name: docker-config
       mountPath: /kaniko/.docker/
-    command:
-    - cat
-    tty: true
   volumes:
   - name: docker-config
     configMap:
