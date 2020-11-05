@@ -5,6 +5,8 @@ pipeline {
 apiVersion: v1
 kind: Pod
 spec:
+  securityContext:
+    runAsUser: 1000
   containers:
   - name: openjdk11
     image: adoptopenjdk/openjdk11
