@@ -43,7 +43,7 @@ spec:
                     npm install
                     npm run build
                     ls -al
-                    ls -al frontend/build
+                    ls -al build
                     '''
                     //dir("frontend/build") {
                     //   stash "frontoutput"
