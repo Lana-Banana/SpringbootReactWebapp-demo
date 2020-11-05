@@ -43,9 +43,15 @@ spec:
                     pwd
                     ls -al
                     
-                    kubectl get nodes
+                    
+                    kubectl apply -f k8s/namespace.yaml
                     kubectl get ns
                     kubectl get all --all-namespaces
+                    
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/svc.yaml
+                    kubectl get all -n springbootwebapp  
+                    
                     '''
                 }
             }
