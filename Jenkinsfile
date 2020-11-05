@@ -39,25 +39,26 @@ spec:
                     npm install
                     npm run build
                     '''
-                    stash includes: "frontend/build/*", name: "frontoutput"
+                    dir("frontend/build") {
+                       stash "frontoutput"
+                    }
                 }
             }
         }
         stage('Gradle Build') {
             steps {
                 sh '''
+                env
                 pwd
-                ls -al
-                ls -al frontend
                 mkdir frontend/build
                 ls -al frontend/build/
-                chmod +x gradlew
                 '''
                 dir("frontend/build") {
                    unstash "frontoutput"
                    sh "ls -al"
                 }
                 sh '''
+                cd ../
                 pwd
                 ls -al
                 ls -al frontend
