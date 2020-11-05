@@ -66,5 +66,11 @@ spec:
                 sh './gradlew test'
             }
         }
+        
+        stage('Docker Image build') {
+            steps {
+                sh 'docker build'
+            }
+        }
     }
 }
