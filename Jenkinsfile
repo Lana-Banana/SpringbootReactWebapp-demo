@@ -39,7 +39,7 @@ spec:
                     npm install
                     npm run build
                     '''
-                    //stash includes: "build/*", name: "frontoutput"
+                    stash includes: "build/*", name: "frontoutput"
                 }
             }
         }
@@ -54,8 +54,8 @@ spec:
                 chmod +x gradlew
                 '''
                 dir("frontend/build") {
-                   //unstash "frontoutput"
-                    sh "ls -al"
+                   unstash "frontoutput"
+                   sh "ls -al"
                 }
                 sh '''
                 pwd
