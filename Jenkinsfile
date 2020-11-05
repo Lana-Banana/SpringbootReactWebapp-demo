@@ -6,7 +6,7 @@ apiVersion: v1
 kind: Pod
 spec:
   securityContext:
-    runAsUser: 0
+    runAsUser: 1000
   containers:
   - name: openjdk11
     image: adoptopenjdk/openjdk11
@@ -18,18 +18,6 @@ spec:
     command:
     - cat
     tty: true
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:debug
-    command:
-    - /busybox/cat
-    tty: true
-    volumeMounts:
-    - name: docker-config
-      mountPath: /kaniko/.docker/
-  volumes:
-  - name: docker-config
-    configMap:
-      name: docker-config
 '''
             defaultContainer 'jnlp'
         }
@@ -55,18 +43,42 @@ spec:
                     ./gradlew test
                     pwd
                     ls -al build/
+
                     '''
+                    dir("build") {
+                       stash "buildoutput"
+                    }
                 }
             }
         }
         stage('Docker Image build & Push') {
+            agent {
+                    kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  securityContext:
+    runAsUser: 0
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - /busybox/cat
+    tty: true
+    volumeMounts:
+    - name: docker-config
+      mountPath: /kaniko/.docker/
+  volumes:
+  - name: docker-config
+    configMap:
+      name: docker-config
+'''
+                }
+            }
             steps {
                 container(name: 'kaniko') {
-                    sh '''
-                    pwd
-                    ls -al
-                    echo ${env.WORKSPACE}
-                    '''
+                    unstash 'buildoutput'
                     sh '/kaniko/executor --context `PWD` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
