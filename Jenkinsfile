@@ -79,7 +79,7 @@ spec:
             steps {
                 container(name: 'kaniko') {
                     unstash 'buildoutput'
-                    sh '/kaniko/executor --context `PWD` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
+                    sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
         }
