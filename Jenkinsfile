@@ -50,22 +50,13 @@ spec:
         stage('Gradle Build') {
             steps {
                 sh '''
-                env
-                pwd
                 mkdir frontend/build
-                ls -al frontend/build/
+                chmod +x gradlew
                 '''
                 dir("frontend/build") {
                    unstash "frontoutput"
                    sh "ls -al"
                 }
-                sh '''
-                pwd
-                ls -al
-                ls -al frontend
-                ls -al frontend/build/
-                chmod +x gradlew
-                '''
                 sh './gradlew build --stacktrace'
             }
         }
