@@ -45,9 +45,6 @@ spec:
                     ls -al build/
                     '''
                     stash name:'buildoutput' includes: 'build/*'
-                    // dir("build") {
-                    //   stash "buildoutput"
-                    // }
                 }
             }
         }
