@@ -7,6 +7,7 @@ kind: Pod
 spec:
   securityContext:
     runAsUser: 1000
+    runAsUser: 0
   containers:
   - name: openjdk11
     image: adoptopenjdk/openjdk11
@@ -63,7 +64,7 @@ spec:
             steps {
                 container(name: 'kaniko') {
                     sh 'ls -al'
-                    sh '/kaniko/executor --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
+                    sh '/kaniko/executor -f ./Dockerfile --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
         }
