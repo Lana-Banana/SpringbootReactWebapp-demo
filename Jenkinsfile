@@ -44,7 +44,7 @@ spec:
                     pwd
                     ls -al build/
                     '''
-                    stash name:'buildoutput', includes: 'build/*'
+                    stash name:'buildoutput', includes: 'build/**/*'
                 }
             }
         }
@@ -76,6 +76,10 @@ spec:
             steps {
                 container(name: 'kaniko') {
                     unstash 'buildoutput'
+                    sh '''
+                    pwd
+                    ls- al
+                    '''
                     sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
