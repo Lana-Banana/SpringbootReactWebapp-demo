@@ -43,11 +43,11 @@ spec:
                     ./gradlew test
                     pwd
                     ls -al build/
-
                     '''
-                    dir("build") {
-                       stash "buildoutput"
-                    }
+                    stash name:'buildoutput' includes: 'build/*'
+                    // dir("build") {
+                    //   stash "buildoutput"
+                    // }
                 }
             }
         }
