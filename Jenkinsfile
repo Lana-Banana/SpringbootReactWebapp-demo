@@ -58,7 +58,7 @@ spec:
                    sh "ls -al"
                 }
                 sh '''
-                cd ../
+                cd ../../
                 pwd
                 ls -al
                 ls -al frontend
