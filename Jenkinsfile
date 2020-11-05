@@ -66,7 +66,7 @@ spec:
                     pwd
                     ls -al
                     '''
-                    sh '/kaniko/executor --context ${env.WORKSPACE} --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
+                    sh '/kaniko/executor --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
         }
