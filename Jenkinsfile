@@ -19,7 +19,7 @@ spec:
     - cat
     tty: true
   - name: kaniko
-    image: gcr.io/kaniko-project/executor:latest
+    image: gcr.io/kaniko-project/executor:debug
     command:
     - /busybox/cat
     tty: true
@@ -79,7 +79,7 @@ spec:
         stage('Docker Image build') {
             steps {
                 container(name: 'kaniko') {
-                    sh 'docker build'
+                    sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
                 }
             }
         }
