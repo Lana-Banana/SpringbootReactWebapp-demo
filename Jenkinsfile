@@ -42,39 +42,22 @@ spec:
                     cd frontend
                     npm install
                     npm run build
-                    ls -al
-                    ls -al build
                     '''
-                    //dir("frontend/build") {
-                    //   stash "frontoutput"
-                    //}
                 }
             }
         }
-        stage('Gradle Build') {
+        stage('Gradle Build & Test') {
             steps {
                 container(name: 'openjdk11') {
                     sh '''
-                    pwd
-                    ls -al
-                    ls -al frontend/build
                     chmod +x gradlew
+                    ./gradlew build --stacktrace
+                    ./gradlew test
                     '''
-                    //dir("frontend/build") {
-                    //   unstash "frontoutput"
-                    //   sh "ls -al"
-                    //}
-                    sh './gradlew build --stacktrace'
+
                 }
             }
         }
-
-        stage('Test') {
-            steps {
-                sh './gradlew test'
-            }
-        }
-        
         stage('Docker Image build') {
             steps {
                 container(name: 'kaniko') {
