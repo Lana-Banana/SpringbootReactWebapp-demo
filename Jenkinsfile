@@ -7,7 +7,6 @@ kind: Pod
 spec:
   securityContext:
     runAsUser: 1000
-    // runAsUser: 0
   containers:
   - name: openjdk11
     image: adoptopenjdk/openjdk11
