@@ -39,7 +39,7 @@ spec:
                     npm install
                     npm run build
                     '''
-                    stash includes: "build/*", name: "frontoutput"
+                    stash includes: "frontend/build/*", name: "frontoutput"
                 }
             }
         }
