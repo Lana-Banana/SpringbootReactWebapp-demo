@@ -1,4 +1,4 @@
-pipeline {
+ pipeline {
     agent {
         kubernetes {
             yaml '''
@@ -18,6 +18,14 @@ spec:
     command:
     - cat
     tty: true
+  - name: kubectl
+    image: bitnami/kubectl
+    command:
+    - cat
+    tty: true
+    env:
+    - name: "KUBECONFIG"
+      value: "./kubeconfig"
 '''
             defaultContainer 'jnlp'
         }
@@ -81,6 +89,38 @@ spec:
                     ls -al
                     '''
                     sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
+                }
+            }
+        }
+        
+        stage('Fetch Credential & Set kubeconfig') {
+            steps {
+                withVault([
+                    configuration: [vaultUrl: 'https://dodt-vault.acldevsre.de',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
+                    vaultSecrets: [[path: 'jenkins/dodt-dev-poc-oabe', secretValues: [[envVar: 'KUBECONFIG', vaultKey: 'kubeconfig']]]]
+                ]){
+                    sh '''
+                    cat <<EOF > kubeconfig
+                    ${KUBECONFIG}
+                    '''
+                    sh "sed -i -e '1,1s/^ *//' ./kubeconfig"
+                }
+            }
+        }
+
+        stage('Deploy Springboot Webapp') {
+            steps {
+                container('kubectl') {
+                    sh '''
+                    kubectl apply -f k8s/namespace.yaml
+                    kubectl get ns
+                    
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl get all -n springbootwebapp
+                    
+                    kubectl apply -f k8s/svc.yaml
+                    kubectl get all -n springbootwebapp
+                    '''
                 }
             }
         }
