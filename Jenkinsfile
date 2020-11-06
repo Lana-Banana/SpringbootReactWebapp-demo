@@ -36,7 +36,7 @@ spec:
                 }
             }
         }
-        stage('Command test') {
+        stage('Deploy Springboot Webapp') {
             steps {
                 container('kubectl') {
                     sh '''
