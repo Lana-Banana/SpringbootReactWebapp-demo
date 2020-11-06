@@ -112,6 +112,8 @@ spec:
             steps {
                 container('kubectl') {
                     sh '''
+                    kubectl get ns
+                    
                     kubectl apply -f k8s/namespace.yaml
                     kubectl get ns
                     
