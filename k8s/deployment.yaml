@@ -16,8 +16,8 @@ spec:
         app: springbootwebapp
     spec:
       containers:
-          image: ''
-          name: springbootwebapp
+        - name: springbootwebapp
+          image: '400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp'
           ports:
             - containerPort: 8080
               name: http
