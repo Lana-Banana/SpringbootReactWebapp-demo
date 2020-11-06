@@ -40,19 +40,14 @@ spec:
             steps {
                 container('kubectl') {
                     sh '''
-                    pwd
-                    ls -al
-                    
-                    
                     kubectl apply -f k8s/namespace.yaml
                     kubectl get ns
                     
                     kubectl apply -f k8s/deployment.yaml
-                    kubectl get all -n springbootwebapp  
+                    kubectl get all -n springbootwebapp
                     
                     kubectl apply -f k8s/svc.yaml
-                    kubectl get all -n springbootwebapp  
-                    
+                    kubectl get all -n springbootwebapp
                     '''
                 }
             }
