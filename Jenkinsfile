@@ -1,7 +1,7 @@
- pipeline {
-    agent {
-        kubernetes {
-            yaml '''
+pipeline {
+  agent {
+    kubernetes {
+      yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -27,39 +27,44 @@ spec:
     - name: "KUBECONFIG"
       value: "./kubeconfig"
 '''
-            defaultContainer 'jnlp'
-        }
+      defaultContainer 'jnlp'
     }
-    stages {
-        stage('Npm Build') {
-            steps {
-                container(name: 'nodejs') {
-                    sh '''
+
+  }
+  stages {
+    stage('Npm Build') {
+      steps {
+        container(name: 'nodejs') {
+          sh '''
                     cd frontend
                     npm install
                     npm run build
                     '''
-                }
-            }
         }
-        stage('Gradle Build & Test') {
-            steps {
-                container(name: 'openjdk11') {
-                    sh '''
+
+      }
+    }
+
+    stage('Gradle Build & Test') {
+      steps {
+        container(name: 'openjdk11') {
+          sh '''
                     chmod +x gradlew
                     ./gradlew build --stacktrace
                     ./gradlew test
                     pwd
                     ls -al build/
                     '''
-                    stash name:'buildoutput', includes: 'build/**/*'
-                }
-            }
+          stash(name: 'buildoutput', includes: 'build/**/*')
         }
-        stage('Docker Image build & Push') {
-            agent {
-                    kubernetes {
-            yaml '''
+
+      }
+    }
+
+    stage('Docker Image build & Push') {
+      agent {
+        kubernetes {
+          yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -79,52 +84,21 @@ spec:
     configMap:
       name: docker-config
 '''
-                }
-            }
-            steps {
-                container(name: 'kaniko') {
-                    unstash 'buildoutput'
-                    sh '''
+        }
+
+      }
+      steps {
+        container(name: 'kaniko') {
+          unstash 'buildoutput'
+          sh '''
                     pwd
                     ls -al
                     '''
-                    sh '/kaniko/executor --context `pwd` --destination 400603430485.dkr.ecr.ap-northeast-2.amazonaws.com/springbootwebapp:latest'
-                }
-            }
-        }
-        
-        stage('Fetch Credential & Set kubeconfig') {
-            steps {
-                withVault([
-                    configuration: [vaultUrl: 'https://dodt-vault.acldevsre.de',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
-                    vaultSecrets: [[path: 'jenkins/dodt-dev-poc-oabe', secretValues: [[envVar: 'KUBECONFIG', vaultKey: 'kubeconfig']]]]
-                ]){
-                    sh '''
-                    cat <<EOF > kubeconfig
-                    ${KUBECONFIG}
-                    '''
-                    sh "sed -i -e '1,1s/^ *//' ./kubeconfig"
-                }
-            }
+          sh '/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest'
         }
 
-        stage('Deploy Springboot Webapp') {
-            steps {
-                container('kubectl') {
-                    sh '''
-                    kubectl get ns
-                    
-                    kubectl apply -f k8s/namespace.yaml
-                    kubectl get ns
-                    
-                    kubectl apply -f k8s/deployment.yaml
-                    kubectl get all -n springbootwebapp
-                    
-                    kubectl apply -f k8s/svc.yaml
-                    kubectl get all -n springbootwebapp
-                    '''
-                }
-            }
-        }
+      }
     }
+
+  }
 }
