@@ -45,21 +45,20 @@ spec:
       }
     }
 
-    stage('Gradle Build & Test') {
-      steps {
-        container(name: 'openjdk11') {
-          sh '''
-                    chmod +x gradlew
-                    ./gradlew build --stacktrace
-                    ./gradlew test
-                    pwd
-                    ls -al build/
-                    '''
-          stash(name: 'buildoutput', includes: 'build/**/*')
-        }
-
-      }
-    }
+//     stage('Gradle Build & Test') {
+//       steps {
+//         container(name: 'openjdk11') {
+//           sh '''
+//                     chmod +x gradlew
+//                     ./gradlew build --stacktrace
+//                     ./gradlew test
+//                     pwd
+//                     ls -al build/
+//                     '''
+//           stash(name: 'buildoutput', includes: 'build/**/*')
+//         }
+//       }
+//     }
 
     stage('Docker Image build & Push') {
       agent {
