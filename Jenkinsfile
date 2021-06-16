@@ -23,7 +23,8 @@ spec:
     }
 
   }
-//   stages {
+  stages {
+	  
 //     stage('Npm Build') {
 //       steps {
 //         container(name: 'nodejs') {
@@ -114,4 +115,4 @@ spec:
       }
     }
   }
-
+}
