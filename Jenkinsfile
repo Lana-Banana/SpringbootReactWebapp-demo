@@ -25,32 +25,32 @@ spec:
   }
   stages {
 	  
-//     stage('Npm Build') {
-//       steps {
-//         container(name: 'nodejs') {
-//           sh '''
-//                     cd frontend
-//                     npm install
-//                     npm run build
-//                     '''
-//         }
-//       }
-//     }
+    stage('Npm Build') {
+      steps {
+        container(name: 'nodejs') {
+          sh '''
+                    cd frontend
+                    npm install
+                    npm run build
+                    '''
+        }
+      }
+    }
 
-//     stage('Gradle Build & Test') {
-//       steps {
-//         container(name: 'openjdk11') {
-//           sh '''
-//                     chmod +x gradlew
-//                     ./gradlew build --stacktrace
-//                     ./gradlew test
-//                     pwd
-//                     ls -al build/
-//                     '''
-//           stash(name: 'buildoutput', includes: 'build/**/*')
-//         }
-//       }
-//     }
+    stage('Gradle Build & Test') {
+      steps {
+        container(name: 'openjdk11') {
+          sh '''
+                    chmod +x gradlew
+                    ./gradlew build --stacktrace
+                    ./gradlew test
+                    pwd
+                    ls -al build/
+                    '''
+          stash(name: 'buildoutput', includes: 'build/**/*')
+        }
+      }
+    }
 
     stage('Docker Image build & Push') {
       agent {
@@ -71,20 +71,8 @@ spec:
         }
       }
       steps {
-	withVault([
-	    configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
-	    vaultSecrets: [[path: 'jenkins/harbor-rbaek', secretValues: [
-		[envVar: 'CI_REGISTRY_USER', vaultKey: 'username'],
-		[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'secret']
-	]]]
-	]) {
-	  sh '''
-                    echo ${CI_REGISTRY_USER}
-                    echo ${CI_REGISTRY_PASSWORD}
-                    '''
-	}
         container(name: 'kaniko') {
-//           unstash 'buildoutput'
+          unstash 'buildoutput'
 	  withVault([
 		    configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
 		    vaultSecrets: [[path: 'jenkins/harbor-rbaek', secretValues: [
@@ -99,18 +87,9 @@ spec:
 			ls -al
 			mkdir -p /kaniko/.docker
 			echo "{\"auths\":{\"harbor.srep-atomy.com\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-			/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest'
-			    '''
+			/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest
+			'''
 		 }
-//           sh '''
-//                     pwd
-//                     ls -al
-//                     '''
-//           sh '''
-// 	  	mkdir -p /kaniko/.docker
-// 		echo "{\"auths\":{\"harbor.srep-atomy.com\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-// 		/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest'
-// 		'''
         }
       }
     }
