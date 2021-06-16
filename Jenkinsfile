@@ -76,17 +76,25 @@ spec:
     command:
     - /busybox/cat
     tty: true
-    volumeMounts:
-    - name: docker-config
-      mountPath: /kaniko/.docker/
-  volumes:
-  - name: docker-config
-    configMap:
-      name: docker-config
 '''
         }
 
       }
+			steps {
+				withVault([
+            configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
+            vaultSecrets: [[path: 'jenkins/harbor-rbaek', secretValues: [
+							[envVar: 'CI_REGISTRY_USER', vaultKey: 'username'],
+							[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'secret']
+						]]]
+        ]){
+            sh '''
+            echo ${CI_REGISTRY_USER}
+						echo ${CI_REGISTRY_PASSWORD}
+						echo ${CI_REGISTRY}
+            '''
+        }
+			}
       steps {
         container(name: 'kaniko') {
           unstash 'buildoutput'
@@ -94,7 +102,11 @@ spec:
                     pwd
                     ls -al
                     '''
-          sh '/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest'
+          sh '''
+										mkdir -p /kaniko/.docker
+    								echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+										/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest'
+										'''
         }
 
       }
