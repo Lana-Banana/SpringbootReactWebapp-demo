@@ -45,20 +45,20 @@ spec:
       }
     }
 
-//     stage('Gradle Build & Test') {
-//       steps {
-//         container(name: 'openjdk11') {
-//           sh '''
-//                     chmod +x gradlew
-//                     ./gradlew build --stacktrace
-//                     ./gradlew test
-//                     pwd
-//                     ls -al build/
-//                     '''
-//           stash(name: 'buildoutput', includes: 'build/**/*')
-//         }
-//       }
-//     }
+    stage('Gradle Build & Test') {
+      steps {
+        container(name: 'openjdk11') {
+          sh '''
+                    chmod +x gradlew
+                    ./gradlew build --stacktrace
+                    ./gradlew test
+                    pwd
+                    ls -al build/
+                    '''
+          stash(name: 'buildoutput', includes: 'build/**/*')
+        }
+      }
+    }
 
     stage('Docker Image build & Push') {
       agent {
@@ -99,7 +99,7 @@ spec:
                     '''
           sh '''
 	  	mkdir -p /kaniko/.docker
-		echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+		echo "{\"auths\":{\"harbor.srep-atomy.com\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
 		/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest'
 		'''
         }
