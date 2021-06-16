@@ -78,7 +78,6 @@ spec:
     tty: true
 '''
         }
-
       }
       steps {
 	withVault([
@@ -87,15 +86,7 @@ spec:
 		[envVar: 'CI_REGISTRY_USER', vaultKey: 'username'],
 		[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'secret']
 	]]]
-	]){
-	    sh '''
-	    	echo ${CI_REGISTRY_USER}
-		echo ${CI_REGISTRY_PASSWORD}
-		echo ${CI_REGISTRY}
-	    '''
-	}
-      }
-      steps {
+	])
         container(name: 'kaniko') {
           unstash 'buildoutput'
           sh '''
