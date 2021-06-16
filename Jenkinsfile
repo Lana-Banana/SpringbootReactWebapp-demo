@@ -86,7 +86,12 @@ spec:
 		[envVar: 'CI_REGISTRY_USER', vaultKey: 'username'],
 		[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'secret']
 	]]]
-	])
+	]) {
+	  sh '''
+                    echo ${CI_REGISTRY_USER}
+                    echo ${CI_REGISTRY_PASSWORD}
+                    '''
+	}
         container(name: 'kaniko') {
           unstash 'buildoutput'
           sh '''
