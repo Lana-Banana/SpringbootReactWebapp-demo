@@ -18,47 +18,38 @@ spec:
     command:
     - cat
     tty: true
-  - name: kubectl
-    image: bitnami/kubectl
-    command:
-    - cat
-    tty: true
-    env:
-    - name: "KUBECONFIG"
-      value: "./kubeconfig"
 '''
       defaultContainer 'jnlp'
     }
 
   }
-  stages {
-    stage('Npm Build') {
-      steps {
-        container(name: 'nodejs') {
-          sh '''
-                    cd frontend
-                    npm install
-                    npm run build
-                    '''
-        }
+//   stages {
+//     stage('Npm Build') {
+//       steps {
+//         container(name: 'nodejs') {
+//           sh '''
+//                     cd frontend
+//                     npm install
+//                     npm run build
+//                     '''
+//         }
+//       }
+//     }
 
-      }
-    }
-
-    stage('Gradle Build & Test') {
-      steps {
-        container(name: 'openjdk11') {
-          sh '''
-                    chmod +x gradlew
-                    ./gradlew build --stacktrace
-                    ./gradlew test
-                    pwd
-                    ls -al build/
-                    '''
-          stash(name: 'buildoutput', includes: 'build/**/*')
-        }
-      }
-    }
+//     stage('Gradle Build & Test') {
+//       steps {
+//         container(name: 'openjdk11') {
+//           sh '''
+//                     chmod +x gradlew
+//                     ./gradlew build --stacktrace
+//                     ./gradlew test
+//                     pwd
+//                     ls -al build/
+//                     '''
+//           stash(name: 'buildoutput', includes: 'build/**/*')
+//         }
+//       }
+//     }
 
     stage('Docker Image build & Push') {
       agent {
@@ -92,7 +83,7 @@ spec:
                     '''
 	}
         container(name: 'kaniko') {
-          unstash 'buildoutput'
+//           unstash 'buildoutput'
 	  withVault([
 		    configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
 		    vaultSecrets: [[path: 'jenkins/harbor-rbaek', secretValues: [
