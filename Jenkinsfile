@@ -75,9 +75,9 @@ spec:
           unstash 'buildoutput'
 	  withVault([
 		    configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
-		    vaultSecrets: [[path: 'jenkins/harbor-rbaek', secretValues: [
+		    vaultSecrets: [[path: 'jenkins/harbor-bot-account', secretValues: [
 			[envVar: 'CI_REGISTRY_USER', vaultKey: 'username'],
-			[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'secret']
+			[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'pasword']
 		]]]
 		]) {
 		  sh '''
