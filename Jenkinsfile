@@ -77,7 +77,7 @@ spec:
 		    configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
 		    vaultSecrets: [[path: 'jenkins/harbor-bot-account', secretValues: [
 			[envVar: 'CI_REGISTRY_USER', vaultKey: 'username'],
-			[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'pasword']
+			[envVar: 'CI_REGISTRY_PASSWORD', vaultKey: 'password']
 		]]]
 		]) {
 		  sh '''
