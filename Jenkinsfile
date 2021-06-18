@@ -84,11 +84,13 @@ spec:
 		      echo ${CI_REGISTRY_USER}
 		      echo ${CI_REGISTRY_PASSWORD}
 		      pwd
-		      ls -al
-		      mkdir -p /kaniko/.docker
-		      cat << EOF > /kaniko/.docker/config.json
-		      {"auths":{"https://harbor.srep-atomy.com/v2/":{"username":"$CI_REGISTRY_USER", "password":"$CI_REGISTRY_PASSWORD"}}}
-		      EOF
+		      ls -al'''
+		  sh '''
+		      mkdir -p /kaniko/.docker 
+cat << EOF > /kaniko/.docker/config.json
+{"auths":{"https://harbor.srep-atomy.com/v2/":{"username":"$CI_REGISTRY_USER", "password":"$CI_REGISTRY_PASSWORD"}}}
+EOF'''
+		  sh '''
 		      cat /kaniko/.docker/config.json
  		      /kaniko/executor --context `pwd` --destination "harbor.srep-atomy.com/emarket/spring-test"
             	      '''
