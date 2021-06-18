@@ -87,7 +87,7 @@ spec:
 			ls -al
 			mkdir -p /kaniko/.docker
 			echo "{\"auths\":{\"https://harbor.srep-atomy.com/v2/\":{\"auth\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-			/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test:latest
+			/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test
 			'''
 		 }
         }
