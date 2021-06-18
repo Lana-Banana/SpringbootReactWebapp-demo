@@ -88,13 +88,14 @@ spec:
 		]]]
 		]) {
 		  sh '''
-			echo ${CI_REGISTRY_USER}
-			echo ${CI_REGISTRY_PASSWORD}
-			pwd
-			ls -al
-			ls -al /kaniko/.docker
-			/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test
-			'''
+		      echo ${CI_REGISTRY_USER}
+		      echo ${CI_REGISTRY_PASSWORD}
+		      pwd
+		      ls -al
+		      ls -al /kaniko/.docker
+		      echo "{\"auths\":{\"harbor.srep-atomy.com\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+		      /kaniko/executor --context `pwd` --destination "harbor.srep-atomy.com/emarket/spring-test"
+            	      '''
 		 }
         }
       }
