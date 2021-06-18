@@ -25,32 +25,32 @@ spec:
   }
   stages {
 	  
-//     stage('Npm Build') {
-//       steps {
-//         container(name: 'nodejs') {
-//           sh '''
-//                     cd frontend
-//                     npm install
-//                     npm run build
-//                     '''
-//         }
-//       }
-//     }
+    stage('Npm Build') {
+      steps {
+        container(name: 'nodejs') {
+          sh '''
+                    cd frontend
+                    npm install
+                    npm run build
+                    '''
+        }
+      }
+    }
 
-//     stage('Gradle Build & Test') {
-//       steps {
-//         container(name: 'openjdk11') {
-//           sh '''
-//                     chmod +x gradlew
-//                     ./gradlew build --stacktrace
-//                     ./gradlew test
-//                     pwd
-//                     ls -al build/
-//                     '''
-//           stash(name: 'buildoutput', includes: 'build/**/*')
-//         }
-//       }
-//     }
+    stage('Gradle Build & Test') {
+      steps {
+        container(name: 'openjdk11') {
+          sh '''
+                    chmod +x gradlew
+                    ./gradlew build --stacktrace
+                    ./gradlew test
+                    pwd
+                    ls -al build/
+                    '''
+          stash(name: 'buildoutput', includes: 'build/**/*')
+        }
+      }
+    }
 
     stage('Docker Image build & Push') {
       agent {
@@ -72,7 +72,7 @@ spec:
       }
       steps {
         container(name: 'kaniko') {
-//           unstash 'buildoutput'
+          unstash 'buildoutput'
 	  withVault([
 		    configuration: [vaultUrl: 'https://vault.srep-atomy.com',  vaultCredentialId: 'approle-for-vault', engineVersion: 2],
 		    vaultSecrets: [[path: 'jenkins/harbor-bot-account', secretValues: [
@@ -92,7 +92,7 @@ cat << EOF > /kaniko/.docker/config.json
 EOF'''
 		  sh '''
 		      cat /kaniko/.docker/config.json
- 		      /kaniko/executor --context `pwd` --destination "harbor.srep-atomy.com/emarket/spring-test"
+ 		      /kaniko/executor --context `pwd` --destination "harbor.srep-atomy.com/emarket/spring-test:0.0.1"
             	      '''
 		 }
         }
