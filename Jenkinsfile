@@ -67,13 +67,6 @@ spec:
     command:
     - /busybox/cat
     tty: true
-    volumeMounts:
-    - name: docker-registry-config
-      mountPath: /kaniko/.docker/
-  volumes:
-  - name: docker-registry-config
-    secret:
-      secretName: docker-registry-config
 '''
         }
       }
@@ -92,7 +85,9 @@ spec:
 		      echo ${CI_REGISTRY_PASSWORD}
 		      pwd
 		      ls -al
-		      ls -al /kaniko/.docker
+		      mkdir -p /kaniko/.docker
+		      echo {\"auth\s":{\"https://harbor.srep-atomy.com/v2/\":{\"username\":\"$CI_REGISTRY_USER\", \"password\":\"$CI_REGISTRY_PASSWORD\"}}} > /kaniko/.docker/config.json
+		      cat /kaniko/.docker/config.json
 		      /kaniko/executor --context `pwd` --destination "harbor.srep-atomy.com/emarket/spring-test"
             	      '''
 		 }
