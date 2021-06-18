@@ -67,6 +67,13 @@ spec:
     command:
     - /busybox/cat
     tty: true
+    volumeMounts:
+    - name: docker-registry-config
+      mountPath: /kaniko/.docker/
+  volumes:
+  - name: docker-registry-config
+    secret:
+      secretName: docker-registry-config
 '''
         }
       }
