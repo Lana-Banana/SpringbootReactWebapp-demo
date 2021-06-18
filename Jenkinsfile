@@ -94,7 +94,7 @@ spec:
 		      ls -al
 		      ls -al /kaniko/.docker
 		      mkdir -p /kaniko/.docker
-		      echo "{\"auths\":{\"harbor.srep-atomy.com\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+		      echo "{\"auths\":{\"https://harbor.srep-atomy.com/v2\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
 		      /kaniko/executor --context `pwd` --destination "harbor.srep-atomy.com/emarket/spring-test"
             	      '''
 		 }
