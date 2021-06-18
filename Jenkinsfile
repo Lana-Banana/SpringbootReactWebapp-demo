@@ -92,8 +92,7 @@ spec:
 			echo ${CI_REGISTRY_PASSWORD}
 			pwd
 			ls -al
-			mkdir -p /kaniko/.docker
-			echo "{\"auths\":{\"https://harbor.srep-atomy.com/v2/\":{\"auth\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+			ls -al /kaniko/.docker
 			/kaniko/executor --context `pwd` --destination harbor.srep-atomy.com/emarket/spring-test
 			'''
 		 }
